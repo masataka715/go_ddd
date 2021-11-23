@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option go_package = "go_ddd/pb";
+
+package task;
+
+service TaskService {
+    rpc GetTask (GetTaskRequest) returns (GetTaskResponse) {}
+}
+
+message GetTaskRequest {
+    int64 id = 1;
+}
+
+message GetTaskResponse {
+    int64 id = 1;
+    string title = 2;
+    string content = 3;
+}
