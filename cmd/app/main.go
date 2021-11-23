@@ -19,7 +19,7 @@ func main() {
 
 	s := grpc.NewServer()
 
-	task := &controller.TaskService{}
+	task := &controller.TaskController{}
 	pb.RegisterTaskServiceServer(s, task)
 
 	log.Printf("gRPC server listening on " + port)
