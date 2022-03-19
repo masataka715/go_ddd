@@ -1,12 +1,13 @@
 package main
 
 import (
-	"go_ddd/internal/app/controller"
-	"go_ddd/internal/pb"
+	"go_ddd/internal/app/handler"
 	"log"
 	"net"
 
 	"google.golang.org/grpc"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 const port = ":50051"
@@ -19,12 +20,16 @@ func main() {
 
 	s := grpc.NewServer()
 
-	task := &controller.TaskController{}
-	pb.RegisterTaskServiceServer(s, task)
+	dsn := "root:root@tcp(127.0.0.1:3306)/go_ddd?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatalln("failed to connect database")
+	}
+
+	handler.RegisterTask(s, db)
 
 	log.Printf("gRPC server listening on " + port)
-
 	if err := s.Serve(lis); err != nil {
-		log.Fatalf(err.Error())
+		log.Fatalln(err.Error())
 	}
 }

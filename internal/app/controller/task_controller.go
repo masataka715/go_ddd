@@ -12,6 +12,12 @@ type TaskController struct {
 	usecase usecase.TaskUsecase
 }
 
+func NewTaskController(usecase usecase.TaskUsecase) *TaskController {
+	return &TaskController{
+		usecase: usecase,
+	}
+}
+
 func (c *TaskController) GetTask(ctx context.Context, in *pb.GetTaskRequest) (*pb.GetTaskResponse, error) {
 	task := c.usecase.Get(model.TaskId(in.Id))
 	return convertPbTask(task), nil

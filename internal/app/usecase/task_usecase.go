@@ -13,8 +13,10 @@ type taskUsecase struct {
 	repository repository.TaskRepository
 }
 
-func NewTaskUsecase() TaskUsecase {
-	return &taskUsecase{}
+func NewTaskUsecase(repository repository.TaskRepository) TaskUsecase {
+	return &taskUsecase{
+		repository: repository,
+	}
 }
 
 func (us *taskUsecase) Get(id model.TaskId) model.Task {
